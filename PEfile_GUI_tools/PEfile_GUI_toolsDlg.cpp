@@ -816,7 +816,27 @@ void CPEfileGUItoolsDlg::OnTvnSelchangedTreePefile(NMHDR* pNMHDR, LRESULT* pResu
         while (m_listInfo.DeleteColumn(0)); 
         m_listDLL.DeleteAllItems();
         while (m_listDLL.DeleteColumn(0));
-        if (itemText == _T("NT Headers")) {
+        if (itemText == _T("DOS Header")) {
+            IMAGE_DOS_HEADER dosHeader;
+            if (fread(&dosHeader, sizeof(dosHeader), 1, file) != 1 ||
+                dosHeader.e_magic != IMAGE_DOS_SIGNATURE)
+            {
+                fclose(file);
+                AfxMessageBox(L"Không phải PE file hợp lệ.", MB_OK | MB_ICONERROR);
+                return;
+            }
+            m_listInfo.InsertColumn(0, _T("Member"), LVCFMT_LEFT, 250);
+            m_listInfo.InsertColumn(1, _T("Value"), LVCFMT_LEFT, 250);
+
+            CString str;
+
+            str.Format(_T("0x%X"), dosHeader.e_magic);
+            m_listInfo.InsertItem(0, _T("e_magic"));
+            m_listInfo.SetItemText(0, 1, str);
+
+        }
+        else if (itemText == _T("NT Headers")) 
+        {
             m_listInfo.InsertColumn(0, _T("Member"), LVCFMT_LEFT, 250);
             m_listInfo.InsertColumn(1, _T("Value"), LVCFMT_LEFT, 250);
             

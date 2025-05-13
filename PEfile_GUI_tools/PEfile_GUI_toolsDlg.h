@@ -52,13 +52,7 @@ public:
 	
 private:
 	CListCtrl m_listInfo;
-	IMAGE_DOS_HEADER      m_dosHeader{};
-	IMAGE_FILE_HEADER     m_fileHeader{};
-	IMAGE_OPTIONAL_HEADER32 m_opt32{};
-	IMAGE_OPTIONAL_HEADER64 m_opt64{};
-	bool                  m_isPE32{ false };
-	std::vector<IMAGE_DATA_DIRECTORY> m_dataDirs;
-	std::vector<IMAGE_SECTION_HEADER> m_sections;
+	
 public:
 	CListCtrl m_listDLL;
 	std::vector<ImportEntry> m_imports;
