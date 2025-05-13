@@ -1,7 +1,4 @@
-﻿// PEfile_GUI_toolsDlg.cpp : implementation file
-//
-
-#include "pch.h"
+﻿#include "pch.h"
 #include "framework.h"
 #include "PEfile_GUI_tools.h"
 #include "PEfile_GUI_toolsDlg.h"
@@ -25,42 +22,8 @@ LPCTSTR directoryNames[] = {
     _T("IAT Directory"), _T("Delay Import Directory"), _T(".NET Metadata Directory")
 };
 
-// CAboutDlg dialog used for App About
-
-class CAboutDlg : public CDialogEx
-{
-public:
-	CAboutDlg();
-
-// Dialog Data
-#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_ABOUTBOX };
-#endif
-
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-// Implementation
-protected:
-	DECLARE_MESSAGE_MAP()
-};
-
-CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
-{
-}
-
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialogEx::DoDataExchange(pDX);
-}
-
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
-END_MESSAGE_MAP()
-
 
 // CPEfileGUItoolsDlg dialog
-
-
 
 CPEfileGUItoolsDlg::CPEfileGUItoolsDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_PEFILE_GUI_TOOLS_DIALOG, pParent)
@@ -86,60 +49,6 @@ BEGIN_MESSAGE_MAP(CPEfileGUItoolsDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_SELECT_FILE, &CPEfileGUItoolsDlg::OnBnClickedBtnSelectFile)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_INFO, &CPEfileGUItoolsDlg::OnLvnItemchangedListInfo)
 END_MESSAGE_MAP()
-
-
-// CPEfileGUItoolsDlg message handlers
-
-BOOL CPEfileGUItoolsDlg::OnInitDialog()
-{
-	CDialogEx::OnInitDialog();
-
-	// Add "About..." menu item to system menu.
-
-	// IDM_ABOUTBOX must be in the system command range.
-	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
-	ASSERT(IDM_ABOUTBOX < 0xF000);
-
-	CMenu* pSysMenu = GetSystemMenu(FALSE);
-	if (pSysMenu != nullptr)
-	{
-		BOOL bNameValid;
-		CString strAboutMenu;
-		bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
-		ASSERT(bNameValid);
-		if (!strAboutMenu.IsEmpty())
-		{
-			pSysMenu->AppendMenu(MF_SEPARATOR);
-			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
-		}
-	}
-
-	// Set the icon for this dialog.  The framework does this automatically
-	//  when the application's main window is not a dialog
-	SetIcon(m_hIcon, TRUE);			// Set big icon
-	SetIcon(m_hIcon, FALSE);		// Set small icon
-
-	// TODO: Add extra initialization here
-
-	return TRUE;  // return TRUE  unless you set the focus to a control
-}
-
-void CPEfileGUItoolsDlg::OnSysCommand(UINT nID, LPARAM lParam)
-{
-	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
-	{
-		CAboutDlg dlgAbout;
-		dlgAbout.DoModal();
-	}
-	else
-	{
-		CDialogEx::OnSysCommand(nID, lParam);
-	}
-}
-
-// If you add a minimize button to your dialog, you will need the code below
-//  to draw the icon.  For MFC applications using the document/view model,
-//  this is automatically done for you by the framework.
 
 void CPEfileGUItoolsDlg::OnPaint()
 {
@@ -181,7 +90,7 @@ DWORD RvaToOffset(DWORD rva, IMAGE_SECTION_HEADER* sections, int sectionCount) {
             return rva - sectionVA + sections[i].PointerToRawData;
         }
     }
-    return 0; // Không tìm thấy
+    return 0; 
 }
 
 void CPEfileGUItoolsDlg::OnBnClickedBtnSelectFile()
@@ -239,27 +148,22 @@ bool CPEfileGUItoolsDlg::ReadPEheader(FILE* file, IMAGE_FILE_HEADER& fileHeader,
 
     CString str;
 
-    // Machine
     str.Format(_T("0x%X"), fileHeader.Machine);
     m_listInfo.InsertItem(index, _T("Machine"));
     m_listInfo.SetItemText(index++, 1, str);
 
-    // NumberOfSections
     str.Format(_T("%d"), fileHeader.NumberOfSections);
     m_listInfo.InsertItem(index, _T("Number of Sections"));
     m_listInfo.SetItemText(index++, 1, str);
 
-    // TimeDateStamp
     str.Format(_T("0x%X"), fileHeader.TimeDateStamp);
     m_listInfo.InsertItem(index, _T("TimeDateStamp"));
     m_listInfo.SetItemText(index++, 1, str);
 
-    // SizeOfOptionalHeader
     str.Format(_T("%d"), fileHeader.SizeOfOptionalHeader);
     m_listInfo.InsertItem(index, _T("Size of Optional Header"));
     m_listInfo.SetItemText(index++, 1, str);
 
-    // Characteristics
     str.Format(_T("0x%X"), fileHeader.Characteristics);
     m_listInfo.InsertItem(index, _T("Characteristics"));
     m_listInfo.SetItemText(index++, 1, str);
@@ -918,13 +822,8 @@ void CPEfileGUItoolsDlg::OnTvnSelchangedTreePefile(NMHDR* pNMHDR, LRESULT* pResu
             ReadImportDirectory(file);
             fclose(file);
 
-
-
         }
     }
 
     *pResult = 0;
 }
-
-
-

@@ -7,7 +7,6 @@
 #define IDS_ABOUTBOX                    101
 #define IDD_PEFILE_GUI_TOOLS_DIALOG     102
 #define IDR_MAINFRAME                   128
-#define IDC_TreePEfile                  1002
 #define IDC_Tree_PEfile                 1002
 #define IDC_BTN_SELECT_FILE             1003
 #define IDC_EDIT_FILE_PATH              1004
